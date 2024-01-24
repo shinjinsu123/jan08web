@@ -1,0 +1,68 @@
+@charset "UTF-8";
+table {
+	width: 900px;
+	height: 400px;
+	border-collapse: collapse;
+}
+
+tr:hover {
+	background-color: gray;
+}
+
+th {
+	background-color: gray;
+	border-bottom: 2px solid black;
+}
+
+td {
+	border-bottom: 1px solid gray;
+	text-align: center;
+}
+
+.title {
+	text-align: left;
+	width: 50%;
+}
+
+.w1 {
+	width: 10%;
+}
+
+.w2 {
+	width: 20%;
+}
+
+
+.title a{
+	text-decoration: none;
+}
+.title a:visited{
+	color: gray;
+}
+.title a:link{
+	color: black;
+}
+.title a:hover{
+	color: red;
+}
+
+.paging{
+	margin: 0 auto;
+	margin-top: 10px;
+	width: 500px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+}
+
+.currentBtn{
+	background-color: black;
+	color:white;
+}
+
+span{
+	font-size:small;
+	font-weight: bolder;
+	color: red;
+	background-color: #c0c0c0;
+}
