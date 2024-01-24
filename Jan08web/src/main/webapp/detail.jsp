@@ -74,7 +74,6 @@ $(document).ready(function(){
             
             comment.html(recommentBox);
             
-            
          }
 	});
 
@@ -177,6 +176,17 @@ $(document).ready(function(){
 	         form.submit(); */
 	      }
 	   });
+	   
+	   // 댓글쓰기 창에 쓸 수 있는 글자표시햊고 넘어가면 더이상 입력 불가로 바꾸기
+	   $("#commentcontent").keyup(function(){
+		   let text = $(this).val();
+		   if(text.length > 100){
+			   alert("100자가 넘었습니다.");
+			   $(this).val( text.substr(0, 100) );
+		   }
+		$("#comment-btn").text("글쓰기 " + text.length + "/100");
+	   });
+	   
 	});
 
 </script>
