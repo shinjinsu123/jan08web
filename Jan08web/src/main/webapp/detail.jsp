@@ -48,73 +48,36 @@ $(document).ready(function(){
 	// 댓글 수정하기 버튼을 눌렀다. commentEdit
 	$(".commentEdit").click(function(){
 		if(confirm('수정하시겠습니까?')){
-			//필요한 값 cno 잡기 / 수정한 내용 + 로그인 ==== 서블릿에서 정리
-			
-			let cno = $(this).siblings(".cno").val();   // cno의 형제를 찾아라
-			let text = $(this).parents(".chead").next().text();  // this(나)의 부모인 chead의 next를 찾아라
-			alert(cno + " : " + comment);
-			
-			$.ajax({
-				url : './commentEdit',  // 주소
-				type : 'post',         // get, post  / commentDel은 현재 get에 있다.
-				dataType : 'text',     // 수신 타입 json
-				data: {no : cno},        // 보낼 값
-				success: function(result){ // 0,1
-					//alert("서버에서 온 값 : " + result);
-					if(result == 1){
-						// 정상 수정 : this의 부모(.comment)를 찾아서 remove하겠다.
-						//$(this).closest(".comment").hide();
-						point.remove();
-						
-						let $parent1 = $(this).parent(".cname");
-						$parent1.next().text();
-						
-						
-					}else{
-						alert("삭제할 수 없습니다. 관리자에게 문의하세요.");
-					}
-					
-				},
-				error:function(request, status, error){ //통신 오류
-					alert("문제가 발생했습니다.");
-				}
-			});  // end AJax 
-			
-		}
-		
+            //필요한 값 cno 잡기 / 수정한 내용 + 로그인 --> 서블릿에서 정리
+            let cno = $(this).siblings(".cno").val();
+            let comment = $(this).parents(".chead").next(); //나중에 html변경 태그는 무조건 object라고 뜸
+            //alert(cno + ":" + comment);
+            
+            $(this).prev().hide();
+			$(this).hide();
+			comment.css('height','110');
+			comment.css('padding-top','10px');
+			comment.css('backgroundColor','#c1c1c1');
+			//comment.css("resize", none);
+			//let commentChange = comment.html().replaceAll("<br>", "\r\n");
+            
+            function addBR(str) {
+                return str.replaceAll("<br>", "\r\n");
+            }
+            
+            let recommentBox = '<div class="recommentBox">';
+            recommentBox += '<form action="./cedit" method="post">';
+            recommentBox += '<textarea class="commentcontent" name="comment">' + addBR(comment.html()) + '</textarea>';
+            recommentBox += '<input type ="hidden" name = "cno" value ="' +cno+ '">';
+            recommentBox += '<button class="comment-btn" type = "submit">댓글 수정</button>';
+            recommentBox += '</form></div>';
+            
+            comment.html(recommentBox);
+            
+            
+         }
 	});
-			
-			
-			/* 
-						
-			$.ajax({
-			url : './commentEdit',  // 주소
-			type : 'post',         // get, post  / commentDel은 현재 get에 있다.
-			dataType : 'text',     // 수신 타입 json
-			data: {no : cno},        // 보낼 값
-			success: function(result){ // 0,1
-				//alert("서버에서 온 값 : " + result);
-				if(result == 1){
-					// 정상 수정 : this의 부모(.comment)를 찾아서 remove하겠다.
-					//$(this).closest(".comment").hide();
-					point.remove();
-					
-					let $parent1 = $(this).parent(".cname");
-					$parent1.next().text();
-					
-					
-				}else{
-					alert("삭제할 수 없습니다. 관리자에게 문의하세요.");
-				}
-				
-			},
-			error:function(request, status, error){ //통신 오류
-				alert("문제가 발생했습니다.");
-			}
-		});  // end AJax 
-		
-		*/
-			
+
 	// 댓글 삭제 버튼을 눌렀다. commentDelete
 	$(".commentDelete").click(function(){
 		//alert("삭제버튼을 눌렀습니다.");
@@ -157,7 +120,6 @@ $(document).ready(function(){
 		});  // end AJax
 			
 		}
-		
 		
 	});
 	
