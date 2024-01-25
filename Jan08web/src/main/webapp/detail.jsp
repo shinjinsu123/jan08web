@@ -53,8 +53,8 @@ $(document).ready(function(){
             let comment = $(this).parents(".chead").next(); //나중에 html변경 태그는 무조건 object라고 뜸
             //alert(cno + ":" + comment);
             
-            $(this).prev().hide();
-			$(this).hide();
+            $(this).prev().show();
+			$(this).show();
 			comment.css('height','110');
 			comment.css('padding-top','10px');
 			comment.css('backgroundColor','#c1c1c1');
@@ -66,17 +66,58 @@ $(document).ready(function(){
             }
             
             let recommentBox = '<div class="recommentBox">';
-            recommentBox += '<form action="./cedit" method="post">';
+            //recommentBox += '<form action="./cedit" method="post">';
             recommentBox += '<textarea class="commentcontent" name="comment">' + addBR(comment.html()) + '</textarea>';
             recommentBox += '<input type ="hidden" name = "cno" value ="' +cno+ '">';
             recommentBox += '<button class="comment-btn" type = "submit">댓글 수정</button>';
-            recommentBox += '</form></div>';
+            //recommentBox += '</form>';  // 2024-01-25 form태그 필요없다
+            recommentBox += '</div>';
             
             comment.html(recommentBox);
             
          }
 	});
-
+	
+	// 2024-01-25 댓글 수정 버튼 되게 하기
+	// .comment-btn 버튼 눌렀을 때 .cno값, .commentcontent값 가져오는 명령 만들기
+	// J query로 만들어준다.
+	$(document).on('click', '.comment-btn', function () {
+		if(confirm('수정하시겠습니까?')){
+			let cno = $(this).prev().val();
+			let recomment = $('.commentcontent').val();
+			let comment = $(this).parents(".ccomment");//댓글 위치
+			
+			$.ajax({
+				url : './recomment',
+				type : 'post',
+				dataType : 'text',
+				data : {'cno': cno, 'comment': recomment},
+				success : function(result){
+					if(result == 1){
+						//수정된 데이터를 화면에 보여주면 되요.
+						$(this).parent(".recommentBox").remove();
+						comment.css('background-color','#1bc4bc');
+						comment.css('min-height', '100px');
+						comment.css('height', 'auto');
+						comment.html(recomment.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+						$(".commentDelete").show();
+						$(".commentEdit").show();
+					} else {
+						alert("문제가 발생했습니다. 화면을 갱신합니다.");
+						//location.href='./detail?page=${param.page}&no=${param.no}';
+						location.href='./detail?page=${param.page}&no=${detail.no}';
+					}
+				},
+				error : function(error){
+					alert('문제가 발생했습니다. : ' + error);
+				}
+			});
+		}
+		
+	});
+	
+	
+	
 	// 댓글 삭제 버튼을 눌렀다. commentDelete
 	$(".commentDelete").click(function(){
 		//alert("삭제버튼을 눌렀습니다.");
