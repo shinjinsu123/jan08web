@@ -3,7 +3,7 @@ package com.poseidon.dto;
 // get set만들면 더이상 볼일 없다!
 
 public class BoardDTO {
-	private int no, count, comment;
+	private int no, count, comment, del;
 	private String title, content, write, date, mid, ip;
 	
 	public String getIp() {
@@ -60,6 +60,14 @@ public class BoardDTO {
 	public void setComment(int comment) {
 		this.comment = comment;
 	}
+	public int getDel() {
+		return del;
+	}
+	public void setDel(int del) {
+		this.del = del;
+	}
+	
+	
 	
 	
 	

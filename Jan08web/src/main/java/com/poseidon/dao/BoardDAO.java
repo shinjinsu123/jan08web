@@ -284,7 +284,5 @@ public class BoardDAO extends AbstractDAO{
 		}
 		return list;
 	}
-
-
 	
 }

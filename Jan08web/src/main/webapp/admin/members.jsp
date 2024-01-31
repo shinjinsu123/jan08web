@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자 페이지 입니다.</title>
-<link href="../css/admin.css" rel="stylesheet">
+<link href="../css/admin.css?ver=0.14" rel="stylesheet">
 <link href="../css/member.css" rel="stylesheet">
 <script type="text/javascript" src="../js/menu.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -44,16 +44,7 @@ $(function (){
    <!-- 틀 -->
    <div class="wrap">
       <!-- menu -->
-      <div class="menu">
-         <nav>
-            <ul>
-               <li onclick="url('./members')"><i class="xi-profile"></i>회원 관리</li>
-               <li onclick="url('./board')"><i class="xi-document"></i>게시글 관리</li>
-               <li onclick="url('./comments')"><i class="xi-comment-o"></i>댓글 관리</li>
-               <li onclick="url('./info')"><i class="xi-lock-o"></i>poseidon님</li>
-            </ul>
-         </nav>
-      </div>
+      <%@ include file = "menu.jsp" %>
       <!-- 본문 내용 -->
       <div class="main">
          <!-- 이 페이지에 오는 모든 사람은 관리자인지 아닌지 검사합니다.
@@ -69,7 +60,6 @@ $(function (){
                   <li onclick="url('./members?grade=9')"><i class="xi-plus-square-o"></i> 관리자</li>               
                </ul>
             </div>
-            
             <table>
                <thead>
                <tr>
