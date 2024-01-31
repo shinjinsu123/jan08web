@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.poseidon.dto.BoardDTO;
 import com.poseidon.dto.CommentDTO;
@@ -201,11 +203,11 @@ public class AdminDAO extends AbstractDAO{
 	      ResultSet rs = null;
 	      
 	      String sql = "select c.cno, c.board_no, SUBSTRING(REPLACE(c.ccomment, '<br>', ' '),1, 15) as ccomment,\r\n"
-	      		+ "if(date_format(c.cdate,'%Y-%m-%d') = date_format(current_timestamp(),'%Y-%m-%d'), \r\n"
-	      		+ "date_format(c.cdate,'%h:%i'),date_format(c.cdate,'%Y-%m-%d')) AS cdate, \r\n"
-	      		+ "c.clike, m.mno, m.mid, m.mname, c.cip , c.cdel\r\n"
-	      		+ "from (comment c join member m on(c.mno = m.mno)) \r\n"
-	      		+ "order by c.cno desc";
+	              + "if(date_format(c.cdate,'%Y-%m-%d') = date_format(current_timestamp(),'%Y-%m-%d'), \r\n"
+	              + "date_format(c.cdate,'%h:%i'),date_format(c.cdate,'%Y-%m-%d')) AS cdate, \r\n"
+	              + "c.clike, m.mno, m.mid, m.mname, c.cip , c.cdel\r\n"
+	              + "from (comment c join member m on(c.mno = m.mno)) \r\n"
+	              + "order by c.cno desc";
 	      
 	      try {
 	         pstmt = con.prepareStatement(sql);
@@ -220,6 +222,148 @@ public class AdminDAO extends AbstractDAO{
 	            e.setMno(rs.getInt("mno"));
 	            e.setMname(rs.getString("mname"));
 	            e.setMid(rs.getString("mid"));
+	            list.add(e);
+	         }
+	         
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      }finally{
+	    	  close(rs, pstmt, con);
+	      }
+	      
+	      return list;
+	}
+
+	public List<Map<String, Object>> ipList() {
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+	      Connection con = db.getConnection();
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String sql = "SELECT ino, iip, idate, iurl, idate FROM iplog ORDER BY ino DESC";
+	      
+	      try {
+	         pstmt = con.prepareStatement(sql);
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 Map<String, Object> e = new HashMap<String, Object>();
+	        	 e.put("ino", rs.getInt("ino"));
+	        	 e.put("iip", rs.getString("iip"));
+	        	 e.put("idate", rs.getString("idate"));
+	        	 e.put("iurl", rs.getString("iurl"));
+	        	 e.put("idate", rs.getString("idate"));
+	            list.add(e);
+	         }
+	         
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      }finally{
+	    	  close(rs, pstmt, con);
+	      }
+	      
+	      return list;
+	}
+
+	public List<Map<String, Object>> ipList1() {
+		List<Map<String, Object>> list1 = new ArrayList<Map<String, Object>>();
+	      Connection con = db.getConnection();
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String sql = "SELECT iip, COUNT(*) AS connection_count FROM iplog GROUP BY iip ORDER BY connection_count DESC LIMIT 5";
+	      
+	      try {
+	         pstmt = con.prepareStatement(sql);
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 Map<String, Object> e = new HashMap<String, Object>();
+	        	 e.put("iip", rs.getString("iip"));
+	        	 e.put("connection_count", rs.getInt("connection_count"));
+	            list1.add(e);
+	         }
+	         
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      }finally{
+	    	  close(rs, pstmt, con);
+	      }
+	      
+	      return list1;
+	}
+
+	public List<Map<String, Object>> ipList2() {
+		List<Map<String, Object>> list2 = new ArrayList<Map<String, Object>>();
+	      Connection con = db.getConnection();
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String sql = "SELECT iip, COUNT(*) AS connection_count FROM iplog GROUP BY iip ORDER BY connection_count DESC LIMIT 10";
+	      
+	      try {
+	         pstmt = con.prepareStatement(sql);
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 Map<String, Object> e = new HashMap<String, Object>();
+	        	 e.put("iip", rs.getString("iip"));
+	        	 e.put("connection_count", rs.getString("connection_count"));
+	            list2.add(e);
+	         }
+	         
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      }finally{
+	    	  close(rs, pstmt, con);
+	      }
+	      
+	      return list2;
+	}
+
+	public List<Map<String, Object>> latestIplist() {
+		List<Map<String, Object>> list3 = new ArrayList<Map<String, Object>>();
+	      Connection con = db.getConnection();
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String sql = "SELECT DISTINCT iip FROM iplog ORDER BY idate ASC LIMIT 10";
+	      
+	      try {
+	         pstmt = con.prepareStatement(sql);
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 Map<String, Object> e = new HashMap<String, Object>();
+	        	 e.put("iip", rs.getString("iip"));
+	        	 //e.put("idate", rs.getString("idate"));
+	            list3.add(e);
+	         }
+	         
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      }finally{
+	    	  close(rs, pstmt, con);
+	      }
+	      
+	      return list3;
+	}
+
+	public List<Map<String, Object>> ipList(String ip) {
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+	      Connection con = db.getConnection();
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String sql = "SELECT ino, iip, idate, iurl, idate FROM iplog WHERE iip=? ORDER BY ino DESC";
+	      
+	      try {
+	         pstmt = con.prepareStatement(sql);
+	         pstmt.setString(1, ip);
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	        	 Map<String, Object> e = new HashMap<String, Object>();
+	        	 e.put("ino", rs.getInt("ino"));
+	        	 e.put("iip", rs.getString("iip"));
+	        	 e.put("idate", rs.getString("idate"));
+	        	 e.put("iurl", rs.getString("iurl"));
+	        	 e.put("idate", rs.getString("idate"));
 	            list.add(e);
 	         }
 	         
