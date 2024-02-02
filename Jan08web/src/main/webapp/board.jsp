@@ -22,12 +22,6 @@
 		</header>
 		<div class="main">
 		<div class="mainStyle"><div>
-				<article>
-					<%-- for문 연습해보기<br>
-					<c:forEach items="${list }" var="e" varStatus="s">
-						${e.no } / ${s.first } / ${s.last } / ${s.index } / ${s.count } / ${s.step }<br>
-					</c:forEach> --%>
-				</article>
 
 				<article>
 				<c:choose>
